@@ -7,6 +7,8 @@ public class SolKomutu implements Komut {
     
     @Override
     public void uygula(Robot robot, Harita harita) {
-        robot.solaDon();
+        if (robot.aktifMi()) {
+        robot.sagaDon();
+    }
     }
 }

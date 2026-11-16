@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proglab1.proje2;
 
-/**
- *
- * @author Yahya Bozdoğan
- */
 public class GecersizSatirException extends Exception {
     
     private final String dosyaAdi;
