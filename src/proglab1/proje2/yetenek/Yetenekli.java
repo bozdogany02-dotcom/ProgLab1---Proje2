@@ -1,7 +1,24 @@
 package proglab1.proje2.yetenek;
 
 public interface Yetenekli {
-    default boolean ucabilir() {return false; }
-    default boolean atlayabilir() {return false; }
-    default boolean kayabilir() {return false; }
+
+    default boolean ucabilir() {
+        return false;
+    }
+
+    default boolean atlayabilir() {
+        return false;
+    }
+
+    default boolean kayabilir() {
+        return false;
+    }
+
+    default int kayaAtlamaMaliyeti() {
+        return -1;
+    }
+
+    default int kizginAtlamaMaliyeti() {
+        return -1;
+    }
 }

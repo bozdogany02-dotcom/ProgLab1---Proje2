@@ -1,10 +1,25 @@
+
 package proglab1.proje2.govde;
 
 public class Sicrayan extends Govde {
-    
+
     @Override
-    public String getAd() {return "SICRAYAN"; }
-    
+    public String getAd() {
+        return "SICRAYAN";
+    }
+
     @Override
-    public boolean atlayabilir() {return true; }
+    public boolean atlayabilir() {
+        return true;
+    }
+
+    @Override
+    public int kayaAtlamaMaliyeti() {
+        return 2;
+    }
+
+    @Override
+    public int kizginAtlamaMaliyeti() {
+        return 3;
+    }
 }

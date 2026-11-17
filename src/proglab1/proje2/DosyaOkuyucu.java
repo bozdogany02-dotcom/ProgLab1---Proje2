@@ -8,6 +8,8 @@ import java.util.List;
 
 import proglab1.proje2.govde.*;
 import proglab1.proje2.zemin.*;
+import proglab1.proje2.zemin.KizginZemin;
+import proglab1.proje2.govde.SirikliPaletli;
 
 public class DosyaOkuyucu {
 
@@ -134,6 +136,9 @@ public class DosyaOkuyucu {
                         case "KIZAKLI":
                             govde = new Kizakli();
                             break;
+                        case "SIRIKLI_PALETLI":
+                            govde = new SirikliPaletli();
+                            break;
                         default:
                             throw new GecersizSatirException(
                                     dosyaAdi, satirNo, "Bilinmeyen robot govdesi");
@@ -154,10 +159,10 @@ public class DosyaOkuyucu {
                                 "BOYUT ve ENERJI once tanimlanmali");
                     }
 
-                    if (robotNolari.size() != 4) {
+                    if (robotNolari.size() < 4 || robotNolari.size() > 5) {
                         throw new GecersizSatirException(
                                 dosyaAdi, satirNo,
-                                "Tam olarak dort robot tanimlanmali");
+                                "Tam olarak bes robot tanimlanmali");
                     }
 
                     haritaBasladi = true;
@@ -220,6 +225,10 @@ public class DosyaOkuyucu {
                             zeminler[y][x] = new Engel();
                             break;
 
+                        case 'V':
+                            zeminler[y][x] = new KizginZemin();
+                            break;
+
                         case 'H':
                             zeminler[y][x] = new Rampa();
                             break;
@@ -258,7 +267,7 @@ public class DosyaOkuyucu {
                 }
             }
 
-            if (robotlar.size() != 4) {
+            if (robotlar.size() < 4 || robotlar.size() > 5) {
                 throw new GecersizSatirException(
                         dosyaAdi, satirNo,
                         "Dort robotun tamami haritada bulunmali");

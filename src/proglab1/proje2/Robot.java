@@ -22,19 +22,45 @@ public class Robot {
         this.durum = Durum.AKTIF;
     }
 
-    public int getNo() { return no; }
-    public Govde getGovde() { return govde; }
-    public int getX() { return x; }
-    public int getY() { return y; }
-    public Yon getYon() { return yon; }
-    public int getEnerji() { return enerji; }
-    public Durum getDurum() { return durum; }
+    public int getNo() {
+        return no;
+    }
 
-    public boolean aktifMi() { return durum == Durum.AKTIF; }
+    public Govde getGovde() {
+        return govde;
+    }
 
-    public void sagaDon() { yon = yon.sag(); }
+    public int getX() {
+        return x;
+    }
 
-    public void solaDon() { yon = yon.sol(); }
+    public int getY() {
+        return y;
+    }
+
+    public Yon getYon() {
+        return yon;
+    }
+
+    public int getEnerji() {
+        return enerji;
+    }
+
+    public Durum getDurum() {
+        return durum;
+    }
+
+    public boolean aktifMi() {
+        return durum == Durum.AKTIF;
+    }
+
+    public void sagaDon() {
+        yon = yon.sag();
+    }
+
+    public void solaDon() {
+        yon = yon.sol();
+    }
 
     public void konumaGit(int x, int y) {
         this.x = x;
@@ -48,6 +74,11 @@ public class Robot {
         }
         enerji -= maliyet;
         return true;
+    }
+
+    public void enerjiyiSifirla() {
+        this.enerji = 0;
+        this.durum = Durum.ENERJISIZ;
     }
 
     public void teslimEt() {

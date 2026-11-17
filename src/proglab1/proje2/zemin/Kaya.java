@@ -28,7 +28,7 @@ public class Kaya extends Zemin {
         if(inis == null || !inis.inisaUygunMu() || harita.doluMu(inisX, inisY)){
             return false;       //kayanın önünde durur
         }
-        return gir(robot, Sabitler.KAYA_ATLAMA_MALIYET, inisX, inisY);
+        return gir(robot, robot.getGovde().kayaAtlamaMaliyeti(), inisX, inisY);
     }
     
     @Override
