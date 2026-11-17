@@ -16,8 +16,8 @@ public class DosyaOkuyucu {
 
         int satirNo = 0;
 
-        try (BufferedReader okuyucu =
-                new BufferedReader(new FileReader(dosyaAdi))) {
+        try (BufferedReader okuyucu
+                = new BufferedReader(new FileReader(dosyaAdi))) {
 
             String satir;
             int genislik = 0;
@@ -31,6 +31,7 @@ public class DosyaOkuyucu {
             List<Robot> robotlar = new ArrayList<>();
             List<Integer> robotNolari = new ArrayList<>();
             List<Govde> govdeler = new ArrayList<>();
+            List<String> govdeAdlari = new ArrayList<>();
 
             List<String> haritaSatirlari = new ArrayList<>();
 
@@ -113,6 +114,12 @@ public class DosyaOkuyucu {
                     }
 
                     Govde govde;
+                    if (govdeAdlari.contains(parcalar[2])) {
+                        throw new GecersizSatirException(
+                                dosyaAdi, satirNo,
+                                "Robot govdesi tekrarli");
+                    }
+                    govdeAdlari.add(parcalar[2]);
 
                     switch (parcalar[2]) {
                         case "PALETLI":
@@ -257,8 +264,8 @@ public class DosyaOkuyucu {
                         "Dort robotun tamami haritada bulunmali");
             }
 
-            robotlar.sort((a, b) ->
-                    Integer.compare(a.getNo(), b.getNo()));
+            robotlar.sort((a, b)
+                    -> Integer.compare(a.getNo(), b.getNo()));
 
             return new Harita(
                     genislik, yukseklik, zeminler, robotlar);
@@ -270,4 +277,3 @@ public class DosyaOkuyucu {
         }
     }
 }
-

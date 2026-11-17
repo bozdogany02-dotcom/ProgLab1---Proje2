@@ -11,7 +11,7 @@ public class Simulasyon {
     private final List<Komut> komutlar;
 
     public Simulasyon(Harita harita, List<Robot> robotlar,
-                      List<Komut> komutlar) {
+            List<Komut> komutlar) {
 
         this.harita = harita;
         this.robotlar = new ArrayList<>(robotlar);
@@ -34,7 +34,6 @@ public class Simulasyon {
 
     public void baslat() {
 
-        // Önce komut, sonra robot sırası
         for (Komut komut : komutlar) {
 
             for (Robot robot : robotlar) {
@@ -70,4 +69,3 @@ public class Simulasyon {
         return robotlar;
     }
 }
-

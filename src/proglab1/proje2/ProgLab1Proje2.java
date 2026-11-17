@@ -7,26 +7,35 @@ public class ProgLab1Proje2 {
 
     public static void main(String[] args) {
 
+        if (args.length != 2) {
+            System.out.println(
+                "Kullanim: java ProgLab1Proje2 harita.txt komutlar.txt"
+            );
+            return;
+        }
+
         try {
-            String haritaDosyasi = "harita.txt";
-            String komutDosyasi = "komutlar.txt";
+            // Haritayı ve robotları oku
+            Harita harita = DosyaOkuyucu.oku(args[0]);
 
-            Harita harita = DosyaOkuyucu.oku(haritaDosyasi);
+            // Komutları oku
+            List<Komut> komutlar = KomutOkuyucu.oku(args[1]);
 
-            List<Komut> komutlar =
-                    KomutOkuyucu.oku(komutDosyasi);
-
+            // Simülasyonu oluştur
             Simulasyon simulasyon = new Simulasyon(
-                    harita,
-                    harita.getRobotlar(),
-                    komutlar
+                harita,
+                harita.getRobotlar(),
+                komutlar
             );
 
+            // Simülasyonu çalıştır
             simulasyon.baslat();
+
+            // Sonuçları yazdır
             simulasyon.sonucuYazdir();
 
         } catch (GecersizSatirException e) {
-            System.out.println("DOSYA HATASI: " + e.getMessage());
+            System.out.println("HATA: " + e.getMessage());
         }
     }
 }
