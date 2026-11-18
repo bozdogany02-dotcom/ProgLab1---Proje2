@@ -8,6 +8,11 @@ public class Rampa extends Zemin {
     public Rampa() {super('H'); }
     
     @Override
+    public boolean inisUygula(Robot robot, Harita harita, int x, int y) {
+        return girisUygula(robot, harita, x, y);
+    }
+    
+    @Override
     public boolean girisUygula(Robot robot, Harita harita, int x, int y) {
         if(!robot.enerjiHarca(Sabitler.RAMPA_MALIYET)) {
             return false;

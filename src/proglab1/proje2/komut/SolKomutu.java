@@ -11,4 +11,9 @@ public class SolKomutu implements Komut {
             robot.solaDon();
         }
     }
+
+    @Override
+    public String etiket() {
+        return "SOL";
+    }
 }

@@ -13,8 +13,8 @@ public interface Yetenekli {
     default boolean kayabilir() {
         return false;
     }
-
-    default int atlamaMaliyeti() {
-        return -1;
+    
+    default boolean radyasyonaDayanabilir() {
+        return false;
     }
 }

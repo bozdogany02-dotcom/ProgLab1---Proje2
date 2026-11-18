@@ -13,7 +13,7 @@ public class Buz extends Zemin {
         Govde govde = robot.getGovde();
         if(govde.ucabilir()) {
             
-            return gir(robot, Sabitler.HAVALI_MALIYET, x, y);
+            return gir(robot, Sabitler.BUZ_HAVALI_MALIYET, x, y);
         }
         if(govde.kayabilir()) {
             return kay(robot, harita, x, y);

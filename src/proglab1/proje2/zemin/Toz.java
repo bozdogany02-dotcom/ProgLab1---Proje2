@@ -11,7 +11,7 @@ public class Toz extends Zemin {
     @Override
     public boolean girisUygula(Robot robot, Harita harita, int x, int y) {
         if (robot.getGovde().ucabilir()) {
-            robot.enerjiHarca(Sabitler.HAVALI_MALIYET);   // savrulur, yerinde kalır
+            robot.enerjiHarca(Sabitler.TOZ_HAVALI_MALIYET);   // savrulur, yerinde kalır
             return false;
         }
         return gir(robot, Sabitler.TOZ_MALIYET, x, y);

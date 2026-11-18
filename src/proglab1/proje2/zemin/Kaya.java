@@ -13,11 +13,10 @@ public class Kaya extends Zemin {
 
     @Override
     public boolean girisUygula(Robot robot, Harita harita, int x, int y) {
-
         Govde govde = robot.getGovde();
 
         if (govde.ucabilir()) {
-            return gir(robot, Sabitler.HAVALI_MALIYET, x, y);
+            return gir(robot, Sabitler.KAYA_HAVALI_MALIYET, x, y);
         }
 
         if (govde.atlayabilir()) {
@@ -28,7 +27,6 @@ public class Kaya extends Zemin {
     }
 
     private boolean atla(Robot robot, Harita harita, int x, int y) {
-
         int inisX = x + robot.getYon().getDx();
         int inisY = y + robot.getYon().getDy();
 
@@ -39,8 +37,11 @@ public class Kaya extends Zemin {
             return false;
         }
 
-        return gir(robot, robot.getGovde().atlamaMaliyeti(),
-                inisX, inisY);
+        if (!robot.enerjiHarca(Sabitler.KAYA_ATLAMA_MALIYET)) {
+            return false;
+        }
+
+        return inis.inisUygula(robot, harita, inisX, inisY);
     }
 
     @Override

@@ -6,10 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import proglab1.proje2.govde.*;
-import proglab1.proje2.zemin.*;
-import proglab1.proje2.zemin.KizginZemin;
-import proglab1.proje2.govde.SirikliPaletli;
+import proglab1.proje2.govde.Govde;
+import proglab1.proje2.govde.GovdeFabrikasi;
+import proglab1.proje2.zemin.Duz;
+import proglab1.proje2.zemin.Zemin;
+import proglab1.proje2.zemin.ZeminFabrikasi;
 
 public class DosyaOkuyucu {
 
@@ -33,13 +34,14 @@ public class DosyaOkuyucu {
             List<Robot> robotlar = new ArrayList<>();
             List<Integer> robotNolari = new ArrayList<>();
             List<Govde> govdeler = new ArrayList<>();
-            List<String> govdeAdlari = new ArrayList<>();
 
             List<String> haritaSatirlari = new ArrayList<>();
+            List<Integer> haritaSatirNolari = new ArrayList<>();
+            List<Integer> robotSatirNolari = new ArrayList<>();
+            int haritaBaslikSatiri = 0;
 
             while ((satir = okuyucu.readLine()) != null) {
                 satirNo++;
-
                 satir = satir.trim();
 
                 if (satir.isEmpty() || satir.startsWith("#")) {
@@ -48,6 +50,7 @@ public class DosyaOkuyucu {
 
                 if (haritaBasladi) {
                     haritaSatirlari.add(satir);
+                    haritaSatirNolari.add(satirNo);
                     continue;
                 }
 
@@ -101,7 +104,6 @@ public class DosyaOkuyucu {
                     }
 
                     int no;
-
                     try {
                         no = Integer.parseInt(parcalar[1]);
                     } catch (NumberFormatException e) {
@@ -109,42 +111,29 @@ public class DosyaOkuyucu {
                                 dosyaAdi, satirNo, "Robot numarasi gecersiz");
                     }
 
-                    if (no < 1 || no > 5 || robotNolari.contains(no)) {
+                    if (no < Sabitler.MIN_ROBOT_NO
+                            || no > Sabitler.MAX_ROBOT_NO) {
                         throw new GecersizSatirException(
                                 dosyaAdi, satirNo,
-                                "Robot numarasi gecersiz veya tekrarli");
+                                "Robot numarasi "
+                                + Sabitler.MIN_ROBOT_NO + " ile "
+                                + Sabitler.MAX_ROBOT_NO
+                                + " arasinda olmali");
                     }
 
-                    Govde govde;
-                    if (govdeAdlari.contains(parcalar[2])) {
+                    if (robotNolari.contains(no)) {
                         throw new GecersizSatirException(
-                                dosyaAdi, satirNo,
-                                "Robot govdesi tekrarli");
+                                dosyaAdi, satirNo, "Robot numarasi tekrarli");
                     }
-                    govdeAdlari.add(parcalar[2]);
 
-                    switch (parcalar[2]) {
-                        case "PALETLI":
-                            govde = new Paletli();
-                            break;
-                        case "SICRAYAN":
-                            govde = new Sicrayan();
-                            break;
-                        case "HAVALI":
-                            govde = new Havali();
-                            break;
-                        case "KIZAKLI":
-                            govde = new Kizakli();
-                            break;
-                        case "SIRIKLI_PALETLI":
-                            govde = new SirikliPaletli();
-                            break;
-                        default:
-                            throw new GecersizSatirException(
-                                    dosyaAdi, satirNo, "Bilinmeyen robot govdesi");
+                    Govde govde = GovdeFabrikasi.olustur(parcalar[2]);
+                    if (govde == null) {
+                        throw new GecersizSatirException(
+                                dosyaAdi, satirNo, "Bilinmeyen robot govdesi");
                     }
 
                     robotNolari.add(no);
+                    robotSatirNolari.add(satirNo);
                     govdeler.add(govde);
 
                 } else if (parcalar[0].equals("HARITA")) {
@@ -159,18 +148,14 @@ public class DosyaOkuyucu {
                                 "BOYUT ve ENERJI once tanimlanmali");
                     }
 
-                    if (robotNolari.size() < 4 || robotNolari.size() > 5
-                            || !robotNolari.contains(1)
-                            || !robotNolari.contains(2)
-                            || !robotNolari.contains(3)
-                            || !robotNolari.contains(4)) {
-
+                    if (robotNolari.isEmpty()) {
                         throw new GecersizSatirException(
                                 dosyaAdi, satirNo,
-                                "1, 2, 3 ve 4 numarali robotlar zorunludur.");
+                                "En az bir robot tanimlanmali");
                     }
 
                     haritaBasladi = true;
+                    haritaBaslikSatiri = satirNo;
 
                 } else {
                     throw new GecersizSatirException(
@@ -184,105 +169,82 @@ public class DosyaOkuyucu {
             }
 
             if (haritaSatirlari.size() != yukseklik) {
+                int hataSatiri;
+                if (haritaSatirlari.size() > yukseklik) {
+                    hataSatiri = haritaSatirNolari.get(yukseklik);
+                } else if (haritaSatirNolari.isEmpty()) {
+                    hataSatiri = haritaBaslikSatiri;
+                } else {
+                    hataSatiri = haritaSatirNolari.get(
+                            haritaSatirNolari.size() - 1);
+                }
                 throw new GecersizSatirException(
-                        dosyaAdi, satirNo,
+                        dosyaAdi, hataSatiri,
                         "Harita satir sayisi yukseklikle uyusmuyor");
             }
 
             Zemin[][] zeminler = new Zemin[yukseklik][genislik];
 
             for (int y = 0; y < yukseklik; y++) {
-
                 String satirHarita = haritaSatirlari.get(y);
+                int haritaSatiri = haritaSatirNolari.get(y);
 
                 if (satirHarita.length() != genislik) {
                     throw new GecersizSatirException(
-                            dosyaAdi, satirNo,
+                            dosyaAdi, haritaSatiri,
                             "Harita satirinin genisligi hatali");
                 }
 
                 for (int x = 0; x < genislik; x++) {
-
                     char sembol = satirHarita.charAt(x);
+                    Zemin zemin = ZeminFabrikasi.olustur(sembol);
 
-                    switch (sembol) {
-                        case '.':
-                            zeminler[y][x] = new Duz();
-                            break;
+                    if (zemin != null) {
+                        zeminler[y][x] = zemin;
+                    } else if (sembol >= '0' + Sabitler.MIN_ROBOT_NO
+                            && sembol <= '0' + Sabitler.MAX_ROBOT_NO) {
 
-                        case 'T':
-                            zeminler[y][x] = new Toz();
-                            break;
+                        int no = sembol - '0';
+                        int indeks = robotNolari.indexOf(no);
 
-                        case 'K':
-                            zeminler[y][x] = new Kaya();
-                            break;
+                        if (indeks == -1) {
+                            throw new GecersizSatirException(
+                                    dosyaAdi, haritaSatiri,
+                                    "Tanimlanmamis robot haritada bulundu");
+                        }
 
-                        case '~':
-                            zeminler[y][x] = new Metan();
-                            break;
+                        if (robotlar.stream().anyMatch(r -> r.getNo() == no)) {
+                            throw new GecersizSatirException(
+                                    dosyaAdi, haritaSatiri,
+                                    "Robot haritada birden fazla bulunuyor");
+                        }
 
-                        case 'I':
-                            zeminler[y][x] = new Buz();
-                            break;
+                        robotlar.add(new Robot(
+                                no, govdeler.get(indeks), x, y, enerji));
+                        zeminler[y][x] = new Duz();
 
-                        case 'X':
-                            zeminler[y][x] = new Engel();
-                            break;
-
-                        case 'V':
-                            zeminler[y][x] = new KizginZemin();
-                            break;
-
-                        case 'H':
-                            zeminler[y][x] = new Rampa();
-                            break;
-
-                        default:
-                            if (sembol >= '1' && sembol <= '9') {
-
-                                int no = sembol - '0';
-                                int indeks = robotNolari.indexOf(no);
-
-                                if (indeks == -1) {
-                                    throw new GecersizSatirException(
-                                            dosyaAdi, satirNo,
-                                            "Tanimlanmamis robot haritada bulundu");
-                                }
-
-                                if (robotlar.stream().anyMatch(
-                                        r -> r.getNo() == no)) {
-                                    throw new GecersizSatirException(
-                                            dosyaAdi, satirNo,
-                                            "Robot haritada birden fazla bulunuyor");
-                                }
-
-                                robotlar.add(new Robot(
-                                        no, govdeler.get(indeks),
-                                        x, y, enerji));
-
-                                zeminler[y][x] = new Duz();
-
-                            } else {
-                                throw new GecersizSatirException(
-                                        dosyaAdi, satirNo,
-                                        "Gecersiz harita karakteri: " + sembol);
-                            }
+                    } else {
+                        throw new GecersizSatirException(
+                                dosyaAdi, haritaSatiri,
+                                "Gecersiz harita karakteri: " + sembol);
                     }
                 }
             }
 
-            if (robotlar.size() != robotNolari.size()) {
-                throw new GecersizSatirException(
-                        dosyaAdi, satirNo,
-                        "Tanimlanan tum robotlar haritada bulunmalidir");
+            for (int i = 0; i < robotNolari.size(); i++) {
+                int robotNo = robotNolari.get(i);
+                boolean haritada = robotlar.stream()
+                        .anyMatch(r -> r.getNo() == robotNo);
+                if (!haritada) {
+                    throw new GecersizSatirException(
+                            dosyaAdi, robotSatirNolari.get(i),
+                            robotNo + " numarali robot haritada bulunamadi");
+                }
             }
 
-            robotlar.sort((a, b)
-                    -> Integer.compare(a.getNo(), b.getNo()));
+            robotlar.sort((a, b) -> Integer.compare(a.getNo(), b.getNo()));
 
-            return new Harita(
-                    genislik, yukseklik, zeminler, robotlar);
+            return new Harita(genislik, yukseklik, zeminler, robotlar);
 
         } catch (IOException e) {
             throw new GecersizSatirException(

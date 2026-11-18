@@ -4,6 +4,22 @@ import proglab1.proje2.govde.Govde;
 
 public class Robot {
 
+    public static class DurumKaydi {
+        private final int x;
+        private final int y;
+        private final Yon yon;
+        private final int enerji;
+        private final Durum durum;
+
+        private DurumKaydi(int x, int y, Yon yon, int enerji, Durum durum) {
+            this.x = x;
+            this.y = y;
+            this.yon = yon;
+            this.enerji = enerji;
+            this.durum = durum;
+        }
+    }
+
     private final int no;
     private final Govde govde;
     private int x;
@@ -55,19 +71,28 @@ public class Robot {
     }
 
     public void sagaDon() {
-        yon = yon.sag();
+        if (aktifMi()) {
+            yon = yon.sag();
+        }
     }
 
     public void solaDon() {
-        yon = yon.sol();
+        if (aktifMi()) {
+            yon = yon.sol();
+        }
     }
 
     public void konumaGit(int x, int y) {
-        this.x = x;
-        this.y = y;
+        if (aktifMi()) {
+            this.x = x;
+            this.y = y;
+        }
     }
 
     public boolean enerjiHarca(int maliyet) {
+        if (!aktifMi()) {
+            return false;
+        }
         if (enerji < maliyet) {
             durum = Durum.ENERJISIZ;
             return false;
@@ -77,12 +102,28 @@ public class Robot {
     }
 
     public void enerjiyiSifirla() {
-        this.enerji = 0;
-        this.durum = Durum.ENERJISIZ;
+        if (aktifMi()) {
+            this.enerji = 0;
+            this.durum = Durum.ENERJISIZ;
+        }
     }
 
     public void teslimEt() {
-        durum = Durum.TESLIM;
+        if (aktifMi()) {
+            durum = Durum.TESLIM;
+        }
+    }
+
+    public DurumKaydi kayitAl() {
+        return new DurumKaydi(x, y, yon, enerji, durum);
+    }
+
+    public void kayittanYukle(DurumKaydi kayit) {
+        this.x = kayit.x;
+        this.y = kayit.y;
+        this.yon = kayit.yon;
+        this.enerji = kayit.enerji;
+        this.durum = kayit.durum;
     }
 
     public String ozet() {

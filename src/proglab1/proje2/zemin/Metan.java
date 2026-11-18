@@ -10,7 +10,7 @@ public class Metan extends Zemin {
     @Override
     public boolean girisUygula(Robot robot, Harita harita, int x, int y) {
         if(robot.getGovde().ucabilir()) {
-            return gir(robot, Sabitler.HAVALI_MALIYET, x, y);
+            return gir(robot, Sabitler.METAN_HAVALI_MALIYET, x, y);
         }
         return false;       //geçemez
     }

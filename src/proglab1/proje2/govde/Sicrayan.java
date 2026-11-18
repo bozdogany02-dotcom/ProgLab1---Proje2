@@ -13,7 +13,7 @@ public class Sicrayan extends Govde {
     }
 
     @Override
-    public int atlamaMaliyeti() {
-        return 2;
+    public String getYetenekAciklamasi() {
+        return "atlayabilir";
     }
 }

@@ -5,4 +5,8 @@ import proglab1.proje2.Robot;
 
 public interface Komut {
     void uygula(Robot robot, Harita harita);
+
+    default String etiket() {
+        return getClass().getSimpleName();
+    }
 }
