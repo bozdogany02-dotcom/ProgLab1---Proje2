@@ -12,10 +12,9 @@ public class KizginZemin extends Zemin {
     @Override
     public boolean girisUygula(Robot robot, Harita harita, int x, int y) {
 
-        int atlamaMaliyeti = robot.getGovde().kizginAtlamaMaliyeti();
-
-        if (atlamaMaliyeti > 0) {
-            return atla(robot, harita, x, y, atlamaMaliyeti);
+        if (robot.getGovde().atlayabilir()) {
+            int maliyet = robot.getGovde().atlamaMaliyeti() + 1;
+            return atla(robot, harita, x, y, maliyet);
         }
 
         if (robot.getGovde().ucabilir()) {
@@ -41,18 +40,18 @@ public class KizginZemin extends Zemin {
     }
 
     private boolean atla(Robot robot, Harita harita,
-        int x, int y, int maliyet) {
+            int x, int y, int maliyet) {
 
-    int inisX = x + robot.getYon().getDx();
-    int inisY = y + robot.getYon().getDy();
+        int inisX = x + robot.getYon().getDx();
+        int inisY = y + robot.getYon().getDy();
 
-    Zemin inis = harita.zeminAl(inisX, inisY);
+        Zemin inis = harita.zeminAl(inisX, inisY);
 
-    if (inis == null || !inis.inisaUygunMu()
-            || harita.doluMu(inisX, inisY)) {
-        return false;
+        if (inis == null || !inis.inisaUygunMu()
+                || harita.doluMu(inisX, inisY)) {
+            return false;
+        }
+
+        return gir(robot, maliyet, inisX, inisY);
     }
-
-    return gir(robot, maliyet, inisX, inisY);
-}
 }

@@ -109,7 +109,7 @@ public class DosyaOkuyucu {
                                 dosyaAdi, satirNo, "Robot numarasi gecersiz");
                     }
 
-                    if (no < 1 || no > 9 || robotNolari.contains(no)) {
+                    if (no < 1 || no > 5 || robotNolari.contains(no)) {
                         throw new GecersizSatirException(
                                 dosyaAdi, satirNo,
                                 "Robot numarasi gecersiz veya tekrarli");
@@ -159,10 +159,15 @@ public class DosyaOkuyucu {
                                 "BOYUT ve ENERJI once tanimlanmali");
                     }
 
-                    if (robotNolari.size() < 4 || robotNolari.size() > 5) {
+                    if (robotNolari.size() < 4 || robotNolari.size() > 5
+                            || !robotNolari.contains(1)
+                            || !robotNolari.contains(2)
+                            || !robotNolari.contains(3)
+                            || !robotNolari.contains(4)) {
+
                         throw new GecersizSatirException(
                                 dosyaAdi, satirNo,
-                                "Tam olarak bes robot tanimlanmali");
+                                "1, 2, 3 ve 4 numarali robotlar zorunludur.");
                     }
 
                     haritaBasladi = true;
@@ -267,10 +272,10 @@ public class DosyaOkuyucu {
                 }
             }
 
-            if (robotlar.size() < 4 || robotlar.size() > 5) {
+            if (robotlar.size() != robotNolari.size()) {
                 throw new GecersizSatirException(
                         dosyaAdi, satirNo,
-                        "Dort robotun tamami haritada bulunmali");
+                        "Tanimlanan tum robotlar haritada bulunmalidir");
             }
 
             robotlar.sort((a, b)

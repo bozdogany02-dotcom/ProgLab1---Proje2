@@ -14,11 +14,7 @@ public interface Yetenekli {
         return false;
     }
 
-    default int kayaAtlamaMaliyeti() {
-        return -1;
-    }
-
-    default int kizginAtlamaMaliyeti() {
+    default int atlamaMaliyeti() {
         return -1;
     }
 }

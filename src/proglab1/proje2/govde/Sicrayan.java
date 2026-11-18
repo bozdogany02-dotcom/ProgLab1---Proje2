@@ -1,4 +1,3 @@
-
 package proglab1.proje2.govde;
 
 public class Sicrayan extends Govde {
@@ -14,12 +13,7 @@ public class Sicrayan extends Govde {
     }
 
     @Override
-    public int kayaAtlamaMaliyeti() {
+    public int atlamaMaliyeti() {
         return 2;
-    }
-
-    @Override
-    public int kizginAtlamaMaliyeti() {
-        return 3;
     }
 }

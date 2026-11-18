@@ -13,12 +13,7 @@ public class SirikliPaletli extends Govde {
     }
 
     @Override
-    public int kayaAtlamaMaliyeti() {
+    public int atlamaMaliyeti() {
         return 4;
-    }
-
-    @Override
-    public int kizginAtlamaMaliyeti() {
-        return 5;
     }
 }
